@@ -18,17 +18,49 @@
 			####################################
 rechercheDichotomique:
 			addi	r2, zero, -1
+		
 
 conditionRech: 
 			bge r6 , r7, nonConditionRech
 			ret
 
 nonConditionRech:
-				mov r8 ,r5
-				sub r8 , r8 , r4
+				mov r8 ,r7
+				sub r8 , r8 , r6
 				srli r8, r8, 1
-			
-			ret
+				add r8 , r8 ,r6
+
+				slli	r9, r8, 2 #position de t[i]
+				add		r10, r5, r9 #indice du tableau
+				ldw		r11, 0(r10)
+
+conditionInbrRech1:
+				
+				bne		r11, r4, conditionInbrRech2
+				mov		r2, r8
+				ret
+
+conditionInbrRech2:
+				blt		r4, r11 , conditionInbrRech3
+				addi	r6, r8, 1
+				subi	sp, sp, 4
+				stw		ra, 0(sp)
+				call	rechercheDichotomique
+				ldw		ra, 0(sp)
+				addi	sp, sp, 4
+				ret
+
+
+ conditionInbrRech3:
+				subi	r7, r8, 1
+				subi	sp, sp, 4
+				stw		ra, 0(sp)
+				call	rechercheDichotomique
+				ldw		ra, 0(sp)
+				addi	sp, sp, 4
+
+				
+				ret	
 
 			##############################
 			#       Fonction main()      #
@@ -62,6 +94,8 @@ boucle:
 			stw ra, 0(sp)
 			subi sp, sp, 4
 			stw r8,0(sp)
+			subi sp, sp, 4
+			stw r9,0(sp)
 
 
 			##############################
@@ -70,6 +104,8 @@ boucle:
 
 			call rechercheDichotomique
 
+			ldw	r9, 0(sp)
+			addi sp, sp, 4
 			ldw	r8, 0(sp)
 			addi sp, sp, 4
 			ldw	ra, 0(sp)
