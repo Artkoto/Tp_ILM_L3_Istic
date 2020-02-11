@@ -81,10 +81,19 @@ boucle:
 			movia	r4, msgNb
 			addi	r2, zero, PRINT_STRING
 			trap
+
+			# Imprime "condition d'arret du programme: "
+			movia	r4, msgCondAret
+			addi	r2, zero, PRINT_STRING
+			trap
 			
 			# Lit un nombre
 			addi	r2, zero, READ_INT
 			trap
+
+			####verification de la condition d'arret
+			movia r9, 123456789
+			beq r9, r2, finDuProg
      
 			###############Complétion du Main############
 			mov r4,r2
@@ -96,6 +105,8 @@ boucle:
 			stw ra, 0(sp)
 			subi sp, sp, 4
 			stw r8,0(sp)
+			subi sp, sp, 4
+			stw r9,0(sp)
 
 
 			##############################
@@ -120,6 +131,8 @@ nonConditionPos:#si pos >= 0
 			movia r2, PRINT_INT
 			trap
 
+			ldw	r9, 0(sp)
+			addi sp, sp, 4
 			ldw	r8, 0(sp)
 			addi sp, sp, 4
 			ldw	ra, 0(sp)
@@ -127,12 +140,19 @@ nonConditionPos:#si pos >= 0
 
 			br	boucle
 
-			.data
-
 finDuProg:
+			movia	r4, msgFin
+			addi	r2, zero, PRINT_STRING
+			trap
 			movia r2, EXIT
 			trap
-	
-msgNb:		.asciz "Entrez un nombre: \n"
-msgErreur:	.asciz "Nombre non trouve.\n"
-msgPos:		.asciz "La position du nombre est: "
+
+
+			.data
+
+
+msgNb:		 .asciz "Entrez un nombre: \n"
+msgCondAret: .asciz "si vous voulez areter le programme entrez (123456789): \n"
+msgErreur:	 .asciz "Nombre non trouve.\n"
+msgFin:	 .asciz "Fin du programme\n"
+msgPos:		 .asciz "La position du nombre est: "
