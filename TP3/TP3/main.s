@@ -33,11 +33,15 @@ nonConditionRech:
 				slli	r9, r8, 2 #position de t[i]
 				add		r10, r5, r9 #indice du tableau
 				ldw		r11, 0(r10)
+				subi sp , sp , 4
+				stw r11 , 0(sp)
 
 conditionInbrRech1:
 				
 				bne		r11, r4, conditionInbrRech2
 				mov		r2, r8
+				ldw	r11, 0(sp)
+			    addi sp, sp, 4
 				ret
 
 conditionInbrRech2:
@@ -88,7 +92,7 @@ boucle:
 			mov r4,r2
 			movia r5,tableau
 			movia r6,0
-			movia r7,99
+			movia r7,9
 
 			subi sp, sp, 4
 			stw ra, 0(sp)
