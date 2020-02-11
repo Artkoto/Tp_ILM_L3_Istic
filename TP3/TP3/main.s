@@ -105,14 +105,14 @@ boucle:
 			call rechercheDichotomique	
 			mov		r8, r2
 
-conditionPos: 
+conditionPos: #si pos < 0
 			bge r8, r0 , nonConditionPos
 			movia r4 , msgErreur
 			movia r2, PRINT_STRING
 			trap
 			br	boucle
 
-nonConditionPos:
+nonConditionPos:#si pos >= 0
 			movia r4 , msgPos
 			movia r2, PRINT_STRING
 			trap
@@ -128,6 +128,10 @@ nonConditionPos:
 			br	boucle
 
 			.data
+
+finDuProg:
+			movia r2, EXIT
+			trap
 	
 msgNb:		.asciz "Entrez un nombre: \n"
 msgErreur:	.asciz "Nombre non trouve.\n"
