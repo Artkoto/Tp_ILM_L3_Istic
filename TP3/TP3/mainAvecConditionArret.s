@@ -68,7 +68,7 @@ conditionInbrRech2:
 			################################
 			#       Fonction main()  
 			#-------------------------------
-			#          r4:val
+			#         r4:val
 			#		  r5:tableau
 			#		  r6: debut (0)
 			#		  r7:fin (99)
@@ -76,15 +76,26 @@ conditionInbrRech2:
 			################################
 			.globl main
 main:		
+			#declaration de la constante 123456789
+			movia r9, 123456789 
 boucle:
 			# Imprime "Entrez un nombre: "
 			movia	r4, msgNb
+			addi	r2, zero, PRINT_STRING
+			trap
+
+			# Imprime "condition d'arret du programme: "
+			movia	r4, msgCondAret
 			addi	r2, zero, PRINT_STRING
 			trap
 			
 			# Lit un nombre
 			addi	r2, zero, READ_INT
 			trap
+
+			####verification de la condition d'arret
+			## declaration de la consatnte ...
+			beq r9, r2, finDuProg
      
 			###############Completion du Main############
 			mov r4,r2
@@ -98,6 +109,8 @@ boucle:
 			stw ra, 0(sp)
 			subi sp, sp, 4
 			stw r8,0(sp)
+			subi sp, sp, 4
+			stw r9,0(sp)
 
 
 			##############################
@@ -124,6 +137,8 @@ nonConditionPos:#si pos >= 0
 			movia r2, PRINT_INT
 			trap
 
+			ldw	r9, 0(sp)
+			addi sp, sp, 4
 			ldw	r8, 0(sp)
 			addi sp, sp, 4
 			ldw	ra, 0(sp)
@@ -132,12 +147,18 @@ nonConditionPos:#si pos >= 0
 			br	boucle
 
 finDuProg:
+			movia	r4, msgFin
+			addi	r2, zero, PRINT_STRING
+			trap
 			movia r2, EXIT
 			trap
 
+
 			.data
 
-	
-msgNb:		.asciz "Entrez un nombre: \n"
-msgErreur:	.asciz "Nombre non trouve.\n"
-msgPos:		.asciz "La position du nombre est: "
+
+msgNb:		 .asciz "Entrez un nombre: \n"
+msgCondAret: .asciz "si vous voulez areter le programme entrez (123456789): \n"
+msgErreur:	 .asciz "Nombre non trouve.\n"
+msgFin:	 	 .asciz "Fin du programme\n"
+msgPos:		 .asciz "La position du nombre est: "
