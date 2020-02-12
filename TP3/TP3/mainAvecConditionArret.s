@@ -118,6 +118,18 @@ boucle:
 			##############################
 
 			call rechercheDichotomique	
+
+			#On recupere les valeurs rangées dans ma pile après l'appel de la fonction.
+			#Ce qui nous permet de nous assurer de leur restauration si elles ont 
+			#ete modifiés par le programme appelé
+			ldw	r9, 0(sp)
+			addi sp, sp, 4
+			ldw	r8, 0(sp)
+			addi sp, sp, 4
+			ldw	ra, 0(sp)
+			addi sp, sp, 4
+
+
 			mov		r8, r2
 
 conditionPos: 
@@ -136,13 +148,6 @@ nonConditionPos:#si pos >= 0
 			mov r4 , r8
 			movia r2, PRINT_INT
 			trap
-
-			ldw	r9, 0(sp)
-			addi sp, sp, 4
-			ldw	r8, 0(sp)
-			addi sp, sp, 4
-			ldw	ra, 0(sp)
-			addi sp, sp, 4
 
 			br	boucle
 
