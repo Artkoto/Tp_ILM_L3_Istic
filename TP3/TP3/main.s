@@ -12,7 +12,7 @@
 			#---------------------------------------------------
 			# r8:pos
 			# r9:4*pos : position de l'element  dans le tableau
-			#r10:@tabl[pos]
+			# r10:@tabl[pos]
 			# r11:tabl[pos]
 			####################################################
 rechercheDichotomique:
@@ -24,7 +24,8 @@ conditionRech:
 			ret 
 
 nonConditionRech:
-				#calcule de pos dans r8
+				#calcule de pos dans r8 
+				#(pos = debut + (fin-debut) / 2)
 				mov r8 ,r7
 				sub r8 , r8 , r6
 				srli r8, r8, 1
